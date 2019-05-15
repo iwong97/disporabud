@@ -47,7 +47,8 @@ class c_disporabud extends CI_Controller
     }
 
     public function dashboardStaff(){
-        $this->load->view('backend/pengguna_dinas/v_dashboard_staff');
+        // $this->load->view('backend/pengguna_dinas/v_dashboard_staff');
+        redirect("/");
     }
 
     public function kelola_prasarana(){
@@ -75,6 +76,7 @@ class c_disporabud extends CI_Controller
         $this->load->model('pembayaran');
         $this->load->model('user_login');
         $this->load->model('masyarakat');
+        $this->load->model('laporan');
         $this->load->model('kasir');
         $this->load->model('pengguna_dinas');
         $this->load->model('sms');
@@ -113,6 +115,8 @@ class c_disporabud extends CI_Controller
 
         } else if ($this->session->akses == "staff") {
             $data['data'] = $this->prasarana->getPrasarana()->result();
+            $data['tahun'] = $this->laporan->getTahunLaporan()->result();
+            // echo "<pre>";print_r($data);echo "</pre>";
             $this->load->view('backend/pengguna_dinas/v_dashboard_staff', $data);
             //$this->load->view('backend/pengguna_dinas/v_staff_prasarana', $data);
 
@@ -894,5 +898,12 @@ class c_disporabud extends CI_Controller
     {
         $judulnya['judul_pdf'] = $judul;
         $this->load->view('backend/v_pdf', $judulnya);
+    }
+    public function getLaporan($tahun){
+        echo $this->laporan->getLaporanTahunan($tahun);
+    }
+    
+    public function getTahun(){
+        print_r($this->laporan->getTahunLaporan()->result());
     }
 }
