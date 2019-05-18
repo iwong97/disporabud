@@ -85,6 +85,7 @@ class c_disporabud extends CI_Controller
     public function index($tampilan = null)
     {
         $data['user'] = $this->user_login->getUser()->result();
+        $data['tahun'] = $this->laporan->getTahunLaporan()->result();
         if ($this->session->akses == "admin") {
             $data['data'] = $this->user_login->getUser()->result();
             $this->load->view('backend/admin/v_home', $data);
@@ -115,7 +116,6 @@ class c_disporabud extends CI_Controller
 
         } else if ($this->session->akses == "staff") {
             $data['data'] = $this->prasarana->getPrasarana()->result();
-            $data['tahun'] = $this->laporan->getTahunLaporan()->result();
             // echo "<pre>";print_r($data);echo "</pre>";
             $this->load->view('backend/pengguna_dinas/v_dashboard_staff', $data);
             //$this->load->view('backend/pengguna_dinas/v_staff_prasarana', $data);
@@ -131,9 +131,10 @@ class c_disporabud extends CI_Controller
         } else if ($this->session->akses == "kadis") {
             $data['data'] = $this->prasarana->getPrasarana()->result();
             
-            $data['laporan_harian'] = $this->peminjaman->getHarian()->result();
-            $data['laporan_bulanan'] = $this->peminjaman->getBulanan()->result();
-            $data['laporan_tahunan'] = $this->peminjaman->getTahunan()->result();
+            $data['tahun'] = $this->laporan->getTahunLaporan()->result();
+            // $data['laporan_harian'] = $this->peminjaman->getHarian()->result();
+            // $data['laporan_bulanan'] = $this->peminjaman->getBulanan()->result();
+            // $data['laporan_tahunan'] = $this->peminjaman->getTahunan()->result();
             $this->load->view('backend/pengguna_dinas/v_dashboard_kadis', $data);
 
         } else if ($this->session->akses == "kasir") {
@@ -825,6 +826,7 @@ class c_disporabud extends CI_Controller
 
     public function laporanPembayaran(){
         $data['data'] = $this->peminjaman->getLaporan()->result();
+        $data['tahun'] = $this->laporan->getTahunLaporan()->result();
         $this->load->view('backend/kasir/v_laporan_kasir', $data);
     }
 
@@ -901,6 +903,9 @@ class c_disporabud extends CI_Controller
     }
     public function getLaporan($tahun){
         echo $this->laporan->getLaporanTahunan($tahun);
+    }
+    public function getLaporanPembayaran($tahun){
+        echo $this->laporan->getLaporanPembayaran($tahun);
     }
     
     public function getTahun(){

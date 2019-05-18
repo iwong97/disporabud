@@ -10,6 +10,7 @@
 
     <title>Dashboard Kadis</title>
 
+    <link href="<?php echo base_url() ?>assets/backend/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
     <link href="<?php echo base_url() ?>assets/backend/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo base_url() ?>assets/backend/font-awesome/css/font-awesome.css" rel="stylesheet">
 
@@ -77,20 +78,25 @@
         <div class="wrapper wrapper-content animated fadeInRight">
             
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Total Peminjaman Prasarana Disporaparbud </h5>
-                            <!-- <?php echo print_r($peminjaman) ?> -->
-                        </div>
-                        <div class="ibox-content">
-                            <div>
-                                <canvas id="doughnutChart" height="85"></canvas>
+                <div class="col-lg-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Jumlah Peminjaman Prasarana per-Tahun </h5>
+                                    <div class="ibox-tools">
+                                        <select id="selectTahun"class="form-control" style="margin-top:10px;margin-bottom:20px;width:10%;display:inline-flex;">
+                                        <?php foreach($tahun as $item):?>
+                                        <option value="<?php echo $item->tahun?>"><?php echo $item->tahun?></option>
+                                        <?php endforeach;?>
+                                        </select>
+                                        <button class="btn btn-primary" id="loadPeminjamanSarana" style="display:inline-flex;">Load</button>
+                                        <a href="<?php echo base_url()?>/c_disporabud/laporanStaff" class="btn btn-success" style="display:inline-flex;">Show Details</a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content">
+                                    <div id="morris-bar-chart"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="footer">
             <div class="pull-right">
@@ -116,37 +122,33 @@
 
     <!-- ChartJS-->
     <script src="<?php echo base_url() ?>assets/backend/js/plugins/chartJs/Chart.min.js"></script>
+        <script src="<?php echo base_url() ?>assets/backend/js/plugins/morris/raphael-2.1.0.min.js"></script>
+        <script src="<?php echo base_url() ?>assets/backend/js/plugins/morris/morris.js"></script>
     <!-- <script src="<?php echo base_url() ?>assets/backend/js/demo/chartjs-demo.js"></script> -->
 
     <script>
         $(function () {
+            $("#loadPeminjamanSarana").click(() => {
+        $("#morris-bar-chart").empty();
+        var tahun = $("#selectTahun").val()
+        console.log(tahun);
+        $.getJSON("<?php echo base_url();?>c_disporabud/getLaporan/" + tahun, (data) => {
+            Morris.Bar({
+                element: 'morris-bar-chart',
+                data: data,
+                xkey: 'y',
+                ykeys: ['a', 'b'],
+                labels: ['Pengajuan Diterima', 'Pengajuan Ditolak'],
+                hideHover: 'auto',
+                resize: true,
+                ymax: 100,
+                xLabelMargin:1,
+                barColors: ['#04d9c4', '#800000'],
+            });
 
-            var doughnutData = {
-                <?php 
-                $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
-                
-                // $random_warna = "'#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)";
-                foreach ($peminjaman as $d) {
-                    $jumlah[] = $d->jumlah;
-                    $nama_prasarana[] = $d->nama_prasarana;
-                    $warna[] = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)];
-                }
-                ?>
-
-                labels : <?=json_encode($nama_prasarana)?>,
-                datasets : [{
-                    data: <?=json_encode($jumlah)?>,
-                    backgroundColor: <?=json_encode($warna)?>
-                }]
-            };
-            
-            var doughnutOptions = {
-                responsive: true
-            };
-
-
-            var ctx4 = document.getElementById("doughnutChart").getContext("2d");
-            new Chart(ctx4, {type: 'doughnut', data: doughnutData, options:doughnutOptions});
+        })
+    })
+    $("#loadPeminjamanSarana").click()
 
         });
     </script>

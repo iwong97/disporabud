@@ -11,6 +11,7 @@
     <title>Laporan Peminjaman</title>
 
     
+    <link href="<?php echo base_url() ?>assets/backend/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
 
     <link href="<?php echo base_url() ?>assets/backend/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo base_url() ?>assets/backend/font-awesome/css/font-awesome.css" rel="stylesheet">

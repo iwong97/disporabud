@@ -11,6 +11,7 @@
     <title>Laporan Pembayaran </title>
 
     
+    <link href="<?php echo base_url() ?>assets/backend/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
 
     <link href="<?php echo base_url() ?>assets/backend/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo base_url() ?>assets/backend/font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -77,6 +78,27 @@
             </div>
         <div class="wrapper wrapper-content animated fadeInRight">
             <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <h5>Jumlah Transaksi Pembayaran Prasarana per-Tahun </h5>
+                                    <div class="ibox-tools">
+                                        <select id="selectTahun"class="form-control" style="margin-top:10px;margin-bottom:20px;width:10%;display:inline-flex;">
+                                        <?php foreach($tahun as $item):?>
+                                        <option value="<?php echo $item->tahun?>"><?php echo $item->tahun?></option>
+                                        <?php endforeach;?>
+                                        </select>
+                                        <button class="btn btn-primary" id="loadPeminjamanSarana" style="display:inline-flex;">Load</button>
+                                        <a href="<?php echo base_url()?>/c_disporabud/laporanStaff" class="btn btn-success" style="display:inline-flex;">Show Details</a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content">
+                                    <div id="morris-bar-chart"></div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
@@ -134,6 +156,10 @@
 
     <script src="<?php echo base_url() ?>assets/backend/js/plugins/dataTables/datatables.min.js"></script>
 
+        <!-- Morris -->
+        <script src="<?php echo base_url() ?>assets/backend/js/plugins/morris/raphael-2.1.0.min.js"></script>
+        <script src="<?php echo base_url() ?>assets/backend/js/plugins/morris/morris.js"></script>
+
     <!-- Custom and plugin javascript -->
     <script src="<?php echo base_url() ?>assets/backend/js/inspinia.js"></script>
     <script src="<?php echo base_url() ?>assets/backend/js/plugins/pace/pace.min.js"></script>
@@ -150,6 +176,27 @@
                 ]
 
             });
+            $("#loadPeminjamanSarana").click(() => {
+        $("#morris-bar-chart").empty();
+        var tahun = $("#selectTahun").val()
+        console.log(tahun);
+        $.getJSON("<?php echo base_url();?>c_disporabud/getLaporanPembayaran/" + tahun, (data) => {
+            Morris.Bar({
+                element: 'morris-bar-chart',
+                data: data,
+                xkey: 'y',
+                ykeys: ['a', 'b'],
+                labels: ['Pembayaran Diterima', 'Pembayaran Ditolak'],
+                hideHover: 'auto',
+                resize: true,
+                ymax: 100,
+                xLabelMargin:1,
+                barColors: ['#04d9c4', '#800000'],
+            });
+
+        })
+    })
+    $("#loadPeminjamanSarana").click()
 
         });
 
