@@ -138,22 +138,22 @@
                 </div>
             <?php
             } 
-            // elseif ($status->status == "Ditolak") {
-            // // ?>
-            // //     <h3 style="color: red">Status : Ditolak</h3>
-            // //     <p>
-            // //         Mohon Maaf kepada Sdr. <?= $status->nama; ?> sebagai calon siswa smpn 4 purwakarta dengan nisn <?= $status->nisn; ?> anda dinyatakan TIDAK DITERIMA sebagai siswa baru SMPN 4 Purwakarta, Kami merekomendasikan anda untuk mendaftarkan ke sekolah berikut :<br>
-            // //         1. SMPN 9 Purwakarta<br>
-            // //         2. SMPN 10 Purwakarta<br>
-            // //         3. SMPN 1 Campaka<br>
-            // //     </p>
-            // // <?php
-            // // } else {
-            // // ?>
-            // //     <h2>Belum Ada pengumuman</h2>
-            // // <?php
-            // // }
-            // // ?>
+            elseif ($status->status == "Ditolak") {
+            ?>
+                <h3 style="color: red">Status : Ditolak</h3>
+                <p>
+                    Mohon Maaf kepada Sdr. <?= $status->nama; ?> sebagai calon siswa smpn 4 purwakarta dengan nisn <?= $status->nisn; ?> anda dinyatakan TIDAK DITERIMA sebagai siswa baru SMPN 4 Purwakarta, Kami merekomendasikan anda untuk mendaftarkan ke sekolah berikut :<br>
+                    1. SMPN 9 Purwakarta<br>
+                    2. SMPN 10 Purwakarta<br>
+                    3. SMPN 1 Campaka<br>
+                </p>
+            <?php
+            } else {
+            ?>
+                <h2>Belum Ada pengumuman</h2>
+            <?php
+            }
+            ?>
 
 </div>
 <script>
@@ -210,11 +210,12 @@ function printDiv(divName) {
     <script>
         $(document).ready(function(){
             $('.dataTables-example').DataTable({
-                pageLength: 25,
+                pageLength: 5,
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
                 responsive: true,
                 dom: '<"html5buttons"B>lTfgitp',
                 buttons: [
-
+                    
                 ]
 
             });

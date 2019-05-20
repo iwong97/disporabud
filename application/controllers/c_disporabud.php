@@ -712,7 +712,11 @@ class c_disporabud extends CI_Controller
         foreach ($data as $d) {
             $no_ktp = $d->no_ktp;
         }
+        $data['user'] = $data;
         $data['data'] = $this->peminjaman->getHistory($no_ktp)->result();
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
         $this->load->view('backend/masyarakat/v_buktiPenggunaan', $data);
     }
 
@@ -910,5 +914,8 @@ class c_disporabud extends CI_Controller
     
     public function getTahun(){
         print_r($this->laporan->getTahunLaporan()->result());
+    }
+    public function getLaporanPendapatan($tahun){
+        echo $this->laporan->getLaporanPendapatan($tahun);
     }
 }

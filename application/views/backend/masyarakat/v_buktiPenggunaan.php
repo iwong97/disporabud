@@ -139,7 +139,37 @@
                                         <?php else:?> 
                                         <td><?php echo $d->approval_pengajuan; ?></td>
                                         <?php endif;?>
-                                        <td> <button class="btn btn-primary"> Lihat Bukti</button></td>
+                                        <td> <button class="btn btn-primary" onclick="printDiv('printableArea<?=$d->id_peminjaman?>')"> Lihat Bukti</button>
+                                        <div style="display: none;"id="printableArea<?=$d->id_peminjaman?>">
+                    <h3 style="color: green">Status : Diterima</h3>
+                    <p>SURAT KEPUTUSAN KEPALA SMPN 4 PURWAKARTA<br>
+                        Nomor : <br>
+                        Tentang<br>
+                        KELULUSAN PPDB SMPN 4 PURWAKARTA TAHUN PELAJARAN 2018-2019<br><br>
+
+                        Mengingat : <br>
+                        1. Undang-undang Nomor 20 Tahun 2003 tentang Sistem Pendidikan Nasional<br>
+                        2. PERATURAN MENTERI PENDIDIKAN DAN KEBUDAYAAN : Nomor 14 Tahun 2018 tentang Penerimaan Peserta Didik Baru pada Taman Kanak-Kanak, Sekolah Dasar, Sekolah Menengah Pertama, Sekolah Menengah Atas, Sekolah Menengah Kejuruan, atau bentuk lain yang sederajat.<br>
+                        3. Permendiknas No.19 Tahun 2007, tentang Stabdar Pengelolaan Pendidikan Dasar dan Menengah.<br><br>
+
+                        Menimbang :<br>
+                        1. Hasil Verifikasi Data yang kami terima sesuai dengan waktu yang telah ditentukan.<br>
+                        2. Hasil Nilai Ujian Nasional dan verifikasi yang kami teeima sesuai waktu yang telah ditentukan.<br><br>
+
+                        Menetapkan :<br>
+                        Bahwa Penerimaan Peserta Didik Baru Tahun <?php echo date('Y'); ?> SMP NEGERI 4 PURWAKARTA, dengan : <br>
+                        Nama : <?= $user[0]->nama_lengkap; ?><br>
+                        NISN : <?= $d->no_ktp; ?><br>
+                        <!-- Asal Sekolah : <?= $status->asal_sekolah; ?><br> -->
+                        dinyatakan : DITERIMA<br>
+                        Sebagai Calon Peserta Didik Baru di<br>
+                        SMPN 4 PURWAKARTA TAHUN <?php echo date('Y'); ?><br><br>
+
+                        CATATAN : <br>
+                        - Silahkan lakukan Proses Daftar Ulang dan pembayaran Untuk Menyelesaikan Proses Pendaftaran<br>
+                        - Harap daftar ulang dan Pembayaran hingga tanggal yang telah ditentukan</p>
+                </div></td>
+                                        
                                     </tr>
                                 <?php }} ?>
                             </tbody>
@@ -179,7 +209,8 @@
     <script>
         $(document).ready(function(){
             $('.dataTables-example').DataTable({
-                pageLength: 25,
+                pageLength: 5,
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
                 responsive: true,
                 dom: '<"html5buttons"B>lTfgitp',
                 buttons: [
@@ -190,6 +221,16 @@
 
         });
 
+        function printDiv(divName) {
+    var printContents = document.getElementById(divName).innerHTML;
+    var originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+
+    window.print();
+
+    document.body.innerHTML = originalContents;
+}
     </script>
 
 </body>

@@ -53,6 +53,21 @@ class Laporan extends CI_Model
         // print_r($data->result());
         // echo "</pre>";
     }
+    public function getLaporanPendapatan($tahun){
+        $sql = "SELECT prasarana.nama_prasarana as y, pendapatan as a FROM prasarana
+LEFT OUTER JOIN (SELECT id_prasarana, nama_prasarana, sum(tarif) as pendapatan FROM `peminjaman`
+JOIN pembayaran using (id_peminjaman)
+JOIN prasarana using (id_prasarana)
+where LEFT(From_unixtime(tgl_pelaksanaan), 4) = '$tahun' and status_pembayaran = 'Approve pembayaran'
+GROUP BY id_prasarana) d using (id_prasarana)";
+
+        $data = $this->db->query($sql)->result();
+        foreach ($data as $item) {
+            $item->a = intval($item->a);
+        }
+        echo json_encode($data);
+
+    }
     public function getTahunLaporan(){
         return $this->db->query("SELECT DISTINCT LEFT(FROM_UNIXTIME(tgl_pelaksanaan),4) as tahun FROM peminjaman");
     }

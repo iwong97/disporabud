@@ -105,11 +105,12 @@
     <script>
         $(document).ready(function(){
             $('.dataTables-example').DataTable({
-                pageLength: 25,
+                pageLength: 5,
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
                 responsive: true,
                 dom: '<"html5buttons"B>lTfgitp',
                 buttons: [
-
+                    
                 ]
 
             });

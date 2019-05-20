@@ -168,7 +168,8 @@
     <script>
         $(document).ready(function(){
             $('.dataTables-example').DataTable({
-                pageLength: 25,
+                pageLength: 5,
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "All"]],
                 responsive: true,
                 dom: '<"html5buttons"B>lTfgitp',
                 buttons: [
@@ -180,16 +181,15 @@
         $("#morris-bar-chart").empty();
         var tahun = $("#selectTahun").val()
         console.log(tahun);
-        $.getJSON("<?php echo base_url();?>c_disporabud/getLaporanPembayaran/" + tahun, (data) => {
+        $.getJSON("<?php echo base_url();?>c_disporabud/getLaporanPendapatan/" + tahun, (data) => {
             Morris.Bar({
                 element: 'morris-bar-chart',
                 data: data,
                 xkey: 'y',
-                ykeys: ['a', 'b'],
-                labels: ['Pembayaran Diterima', 'Pembayaran Ditolak'],
+                ykeys: ['a'],
+                labels: ['Pendapatan dalam rupiah'],
                 hideHover: 'auto',
                 resize: true,
-                ymax: 100,
                 xLabelMargin:1,
                 barColors: ['#04d9c4', '#800000'],
             });
